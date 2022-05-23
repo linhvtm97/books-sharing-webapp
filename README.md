@@ -1,64 +1,99 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+### Building development environment
+## Introduction
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A PHP development environment for Docker.
 
-## About Laravel
+- Php 8.1
+- Nginx
+- Mysql 5.7
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Getting Started
+### Requirements
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Git](https://git-scm.com/downloads)
+- [Docker](https://store.docker.com/editions/community/docker-ce-desktop-mac) >= 17.12
+- PHP >=8.1
+### Installation
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+#### Build development environment
 
-## Learning Laravel
+After clone the project, you may to setup alias of your project name in COMPOSE_PROJECT_NAME of .env file. Something like this:
+```
+cp .env.example .env
+```
+```
+COMPOSE_PROJECT_NAME=yourappname
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+After that, let's following below command:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```
+docker-compose build
+```
 
-## Laravel Sponsors
+Waiting for a while to finish building containers. Then start run containers.
+```
+docker-compose up -d
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+You should be seen all of containers state is `up`
 
-### Premium Partners
+#### Setup laravel
+Open workspace container then install composer for project
+```
+docker exec -it yourappname_app bash
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+```
+composer install
+```
 
-## Contributing
+Directory permissions to `bootstrap/cache` and `storage` folder.
+```
+chmod -R 755 bootstrap/cache/ storage/
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Make sure root folder has `.env` file and `APP_KEY` has been set. If not please using this command to add them.
+```
+php artisan key:generate
+```
 
-## Code of Conduct
+Run command for migrate table
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```shell
+php artisan migrate
+```
 
-## Security Vulnerabilities
+Open browser and type `localhost` then laravel should be load successful.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+#### Change your hosts
+Open your hosts in `/etc/hosts` the add a host:
+```
+127.0.0.1   ￼api.local
+```
 
-## License
+### Coding conventions
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+You may follow this practice to apply code convention into this project
+- [Laravel Best Practices](https://github.com/alexeymezenin/laravel-best-practices)
+
+#### Required
+While push your commit, the application will check your code conventions automatically. You can see the result in your terminal:
+
+- Coding conventions
+- Possible bugs
+- Suboptimal code
+- Overcomplicated expressions
+- Unused parameters, methods, properties
+
+**[PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer)**
+
+This follow PHP Standards Recommendations: PSR1, PSR2
+```
+./vendor/bin/phpcs -n --standard=phpcs.xml
+```
+
+**[PHPMD](https://github.com/phpmd/phpmd)**
+```
+./vendor/bin/phpmd app text phpmd.xml
+```
