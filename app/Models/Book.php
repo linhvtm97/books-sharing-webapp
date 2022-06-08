@@ -19,6 +19,7 @@ class Book extends Model
         'description',
         'author',
         'owner',
-        'status'
+        'status',
+        'assignee',
     ];
 }

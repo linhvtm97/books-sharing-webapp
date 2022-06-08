@@ -6,20 +6,19 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-class DatabaseSeeder extends Seeder
+class BookSeeder extends Seeder
 {
     /**
-     * Seed the application's database.
+     * Run the database seeds.
      *
      * @return void
      */
     public function run()
     {
         DB::statement('SET FOREIGN_KEY_CHECKS = 0');
-        DB::table('users')->truncate();
+        DB::table('books')->truncate();
 
-        \App\Models\User::factory(100)->create();
+        \App\Models\Book::factory(100)->create();
         DB::statement('SET FOREIGN_KEY_CHECKS = 1');
-
     }
 }
