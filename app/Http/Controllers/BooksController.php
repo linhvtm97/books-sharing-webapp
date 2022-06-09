@@ -6,6 +6,7 @@ use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use App\Repositories\BookRepository;
+use App\Http\Requests\BooksDetailRequest;
 
 /**
  * Class BooksController.
@@ -44,6 +45,29 @@ class BooksController extends Controller
         } catch (\Exception $e) {
             Log::error($e->getMessage());
             echo $e->getMessage();
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param BooksDetailRequest $request
+     *
+     * @return Response
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function show(BooksDetailRequest $request)
+    {
+        try {
+            $book = $this->repository->find($request->id);
+
+            return view('books.detail')->with('book', $book);
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            $error = $e->getMessage();
+            
+            return view('error')->with($error);
         }
     }
 }
