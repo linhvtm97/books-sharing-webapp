@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use phpDocumentor\Reflection\Types\Nullable;
 
 return new class extends Migration
 {
@@ -20,9 +21,12 @@ return new class extends Migration
             $table->string('author');
             $table->unsignedBigInteger('owner');
             $table->tinyInteger('status')->default(0)->comment('0: available, 1: borrowing, 2: not available');
+            $table->unsignedBigInteger('assignee')->nullable();
             $table->timestamps();
 
             $table->foreign('owner')->references('id')->on('users');
+            $table->foreign('assignee')->references('id')->on('users');
+
         });
     }
 
