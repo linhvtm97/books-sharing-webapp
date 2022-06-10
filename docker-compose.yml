@@ -48,3 +48,16 @@ services:
       - "3306"
     ports:
       - 3306:3306
+
+  # Frontend
+  frontend:
+    build:
+      context: ./docker
+      dockerfile: ./Dockerfile.node
+    container_name: ${COMPOSE_PROJECT_NAME}_frontend
+    volumes:
+      - ./:/var/www/html
+      - /var/www/html/node_modules
+    depends_on:
+      - "app"
+    command: "tail -f /dev/null"
