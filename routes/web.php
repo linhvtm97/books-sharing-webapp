@@ -21,4 +21,5 @@ Route::get('/', function () {
 
 Route::group(['prefix'=>'books'], function () {
     Route::get('/', [BooksController::class, 'index']);
+    Route::get('/{id}', [BooksController::class, 'show']);
 });
