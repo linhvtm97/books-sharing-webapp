@@ -20,6 +20,8 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix'=>'books'], function () {
-    Route::get('/', [BooksController::class, 'index']);
+    Route::get('/', [BooksController::class, 'index'])->name('books.index');
     Route::get('/{id}', [BooksController::class, 'show']);
+    Route::get('/{id}/edit', [BooksController::class, 'edit'])->name('books.edit');
+    Route::put('/{id}', [BooksController::class, 'update'])->name('books.update');
 });

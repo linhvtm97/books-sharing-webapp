@@ -40,9 +40,15 @@
                         <td>{{ $book->status }}</td>
                         <td>{{ $book->assignee }}</td>
                         <td>
+
                             <button>
-                                <a href="{{ url('/books/' . $book->id) }}">View detail</a>
+                                <a href="{{ url('/books/' . $book->id) }}" class="mx-3">Detail</a>
                             </button>
+
+                            <button>
+                                <a href="{{ url('/books/' . $book->id) . '/edit' }}">Edit</a>
+                            </button>
+
                         </td>
                         </tr>
                     </tbody>
